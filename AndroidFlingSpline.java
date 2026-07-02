@@ -1,13 +1,12 @@
-package androidx.compose.animation;
+package androidx.compose.foundation.layout;
 
 import kotlin.Metadata;
-import kotlin.ranges.RangesKt;
+import kotlin.jvm.JvmInline;
 
-/* JADX INFO: compiled from: SplineBasedDecay.kt */
+/* JADX INFO: compiled from: WindowInsetsConnection.android.kt */
 /* JADX INFO: loaded from: classes.dex */
-@Metadata(d1 = {"\u00000\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u0014\n\u0002\b\u0002\n\u0002\u0010\u0006\n\u0000\n\u0002\u0010\u0007\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÀ\u0002\u0018\u00002\u00020\u0001:\u0001\u0010B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u0016\u0010\b\u001a\u00020\t2\u0006\u0010\n\u001a\u00020\u000b2\u0006\u0010\f\u001a\u00020\u000bJ\u000e\u0010\r\u001a\u00020\u000e2\u0006\u0010\u000f\u001a\u00020\u000bR\u000e\u0010\u0003\u001a\u00020\u0004X\u0082T¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\u0011"}, d2 = {"Landroidx/compose/animation/AndroidFlingSpline;", "", "()V", "NbSamples", "", "SplinePositions", "", "SplineTimes", "deceleration", "", "velocity", "", "friction", "flingPosition", "Landroidx/compose/animation/AndroidFlingSpline$FlingResult;", "time", "FlingResult", "animation_release"}, k = 1, mv = {1, 8, 0}, xi = 48)
-public final class AndroidFlingSpline {
-    public static final int $stable;
+@Metadata(d1 = {"\u00000\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u0014\n\u0002\b\u0002\n\u0002\u0010\u0006\n\u0000\n\u0002\u0010\u0007\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0005\bÂ\u0002\u0018\u00002\u00020\u0001:\u0001\u0012B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u0016\u0010\b\u001a\u00020\t2\u0006\u0010\n\u001a\u00020\u000b2\u0006\u0010\f\u001a\u00020\u000bJ\u001b\u0010\r\u001a\u00020\u000e2\u0006\u0010\u000f\u001a\u00020\u000bø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u0010\u0010\u0011R\u000e\u0010\u0003\u001a\u00020\u0004X\u0082T¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000\u0082\u0002\u000b\n\u0002\b!\n\u0005\b¡\u001e0\u0001¨\u0006\u0013"}, d2 = {"Landroidx/compose/foundation/layout/AndroidFlingSpline;", "", "()V", "NbSamples", "", "SplinePositions", "", "SplineTimes", "deceleration", "", "velocity", "", "friction", "flingPosition", "Landroidx/compose/foundation/layout/AndroidFlingSpline$FlingResult;", "time", "flingPosition-LfoxSSI", "(F)J", "FlingResult", "foundation-layout_release"}, k = 1, mv = {1, 8, 0}, xi = 48)
+final class AndroidFlingSpline {
     private static final int NbSamples = 100;
     public static final AndroidFlingSpline INSTANCE = new AndroidFlingSpline();
     private static final float[] SplinePositions = new float[101];
@@ -17,13 +16,66 @@ public final class AndroidFlingSpline {
     }
 
     static {
-        SplineBasedDecayKt.computeSplineInfo(SplinePositions, SplineTimes, 100);
-        $stable = 8;
+        float f;
+        float x;
+        float f2;
+        float coef;
+        float y;
+        float coef2;
+        float f3;
+        float xMin = 0.0f;
+        float yMin = 0.0f;
+        int i = 0;
+        while (true) {
+            float f4 = 1.0f;
+            if (i < 100) {
+                float alpha = i / 100.0f;
+                float xMax = 1.0f;
+                while (true) {
+                    f = 2.0f;
+                    x = xMin + ((xMax - xMin) / 2.0f);
+                    f2 = 3.0f;
+                    coef = x * 3.0f * (1.0f - x);
+                    float tx = ((((1.0f - x) * 0.175f) + (x * 0.35000002f)) * coef) + (x * x * x);
+                    if (Math.abs(tx - alpha) < 1.0E-5d) {
+                        break;
+                    } else if (tx > alpha) {
+                        xMax = x;
+                    } else {
+                        xMin = x;
+                    }
+                }
+                SplinePositions[i] = ((((1.0f - x) * 0.5f) + x) * coef) + (x * x * x);
+                float yMax = 1.0f;
+                while (true) {
+                    y = yMin + ((yMax - yMin) / f);
+                    coef2 = y * f2 * (f4 - y);
+                    float dy = ((((f4 - y) * 0.5f) + y) * coef2) + (y * y * y);
+                    f3 = f4;
+                    if (Math.abs(dy - alpha) >= 1.0E-5d) {
+                        if (dy > alpha) {
+                            yMax = y;
+                        } else {
+                            yMin = y;
+                        }
+                        f4 = f3;
+                        f2 = 3.0f;
+                        f = 2.0f;
+                    }
+                }
+                SplineTimes[i] = ((((f3 - y) * 0.175f) + (0.35000002f * y)) * coef2) + (y * y * y);
+                i++;
+            } else {
+                SplineTimes[100] = 1.0f;
+                SplinePositions[100] = SplineTimes[100];
+                return;
+            }
+        }
     }
 
-    public final FlingResult flingPosition(float time) {
-        float clampedTime = RangesKt.coerceIn(time, 0.0f, 1.0f);
-        int index = (int) (100.0f * clampedTime);
+    /* JADX INFO: renamed from: flingPosition-LfoxSSI, reason: not valid java name */
+    public final long m543flingPositionLfoxSSI(float time) {
+        int index = (int) (100.0f * time);
         float distanceCoef = 1.0f;
         float velocityCoef = 0.0f;
         if (index < 100) {
@@ -32,76 +84,84 @@ public final class AndroidFlingSpline {
             float dInf = SplinePositions[index];
             float dSup = SplinePositions[index + 1];
             velocityCoef = (dSup - dInf) / (tSup - tInf);
-            distanceCoef = dInf + ((clampedTime - tInf) * velocityCoef);
+            distanceCoef = dInf + ((time - tInf) * velocityCoef);
         }
-        return new FlingResult(distanceCoef, velocityCoef);
+        long v1$iv = Float.floatToRawIntBits(distanceCoef);
+        long v2$iv = Float.floatToRawIntBits(velocityCoef);
+        return FlingResult.m545constructorimpl((v1$iv << 32) | (4294967295L & v2$iv));
     }
 
     public final double deceleration(float velocity, float friction) {
         return Math.log(((double) (Math.abs(velocity) * 0.35f)) / ((double) friction));
     }
 
-    /* JADX INFO: compiled from: SplineBasedDecay.kt */
-    @Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u0007\n\u0002\b\t\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000e\n\u0000\b\u0087\b\u0018\u00002\u00020\u0001B\u0015\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003¢\u0006\u0002\u0010\u0005J\t\u0010\t\u001a\u00020\u0003HÆ\u0003J\t\u0010\n\u001a\u00020\u0003HÆ\u0003J\u001d\u0010\u000b\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u0003HÆ\u0001J\u0013\u0010\f\u001a\u00020\r2\b\u0010\u000e\u001a\u0004\u0018\u00010\u0001HÖ\u0003J\t\u0010\u000f\u001a\u00020\u0010HÖ\u0001J\t\u0010\u0011\u001a\u00020\u0012HÖ\u0001R\u0011\u0010\u0002\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u0006\u0010\u0007R\u0011\u0010\u0004\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\b\u0010\u0007¨\u0006\u0013"}, d2 = {"Landroidx/compose/animation/AndroidFlingSpline$FlingResult;", "", "distanceCoefficient", "", "velocityCoefficient", "(FF)V", "getDistanceCoefficient", "()F", "getVelocityCoefficient", "component1", "component2", "copy", "equals", "", "other", "hashCode", "", "toString", "", "animation_release"}, k = 1, mv = {1, 8, 0}, xi = 48)
-    public static final /* data */ class FlingResult {
-        public static final int $stable = 0;
-        private final float distanceCoefficient;
-        private final float velocityCoefficient;
+    /* JADX INFO: compiled from: WindowInsetsConnection.android.kt */
+    @Metadata(d1 = {"\u00002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\t\n\u0002\b\u0003\n\u0002\u0010\u0007\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0004\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0002\b\u0003\b\u0087@\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0004\b\u0004\u0010\u0005J\u001a\u0010\f\u001a\u00020\r2\b\u0010\u000e\u001a\u0004\u0018\u00010\u0001HÖ\u0003¢\u0006\u0004\b\u000f\u0010\u0010J\u0010\u0010\u0011\u001a\u00020\u0012HÖ\u0001¢\u0006\u0004\b\u0013\u0010\u0014J\u0010\u0010\u0015\u001a\u00020\u0016HÖ\u0001¢\u0006\u0004\b\u0017\u0010\u0018R\u0011\u0010\u0006\u001a\u00020\u00078F¢\u0006\u0006\u001a\u0004\b\b\u0010\tR\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u0011\u0010\n\u001a\u00020\u00078F¢\u0006\u0006\u001a\u0004\b\u000b\u0010\t\u0088\u0001\u0002\u0092\u0001\u00020\u0003¨\u0006\u0019"}, d2 = {"Landroidx/compose/foundation/layout/AndroidFlingSpline$FlingResult;", "", "packedValue", "", "constructor-impl", "(J)J", "distanceCoefficient", "", "getDistanceCoefficient-impl", "(J)F", "velocityCoefficient", "getVelocityCoefficient-impl", "equals", "", "other", "equals-impl", "(JLjava/lang/Object;)Z", "hashCode", "", "hashCode-impl", "(J)I", "toString", "", "toString-impl", "(J)Ljava/lang/String;", "foundation-layout_release"}, k = 1, mv = {1, 8, 0}, xi = 48)
+    @JvmInline
+    public static final class FlingResult {
+        private final long packedValue;
 
-        public static /* synthetic */ FlingResult copy$default(FlingResult flingResult, float f, float f2, int i, Object obj) {
-            if ((i & 1) != 0) {
-                f = flingResult.distanceCoefficient;
-            }
-            if ((i & 2) != 0) {
-                f2 = flingResult.velocityCoefficient;
-            }
-            return flingResult.copy(f, f2);
+        /* JADX INFO: renamed from: box-impl, reason: not valid java name */
+        public static final /* synthetic */ FlingResult m544boximpl(long j) {
+            return new FlingResult(j);
         }
 
-        /* JADX INFO: renamed from: component1, reason: from getter */
-        public final float getDistanceCoefficient() {
-            return this.distanceCoefficient;
+        /* JADX INFO: renamed from: constructor-impl, reason: not valid java name */
+        public static long m545constructorimpl(long j) {
+            return j;
         }
 
-        /* JADX INFO: renamed from: component2, reason: from getter */
-        public final float getVelocityCoefficient() {
-            return this.velocityCoefficient;
+        /* JADX INFO: renamed from: equals-impl, reason: not valid java name */
+        public static boolean m546equalsimpl(long j, Object obj) {
+            return (obj instanceof FlingResult) && j == ((FlingResult) obj).getPackedValue();
         }
 
-        public final FlingResult copy(float distanceCoefficient, float velocityCoefficient) {
-            return new FlingResult(distanceCoefficient, velocityCoefficient);
+        /* JADX INFO: renamed from: equals-impl0, reason: not valid java name */
+        public static final boolean m547equalsimpl0(long j, long j2) {
+            return j == j2;
         }
 
-        public boolean equals(Object other) {
-            if (this == other) {
-                return true;
-            }
-            if (!(other instanceof FlingResult)) {
-                return false;
-            }
-            FlingResult flingResult = (FlingResult) other;
-            return Float.compare(this.distanceCoefficient, flingResult.distanceCoefficient) == 0 && Float.compare(this.velocityCoefficient, flingResult.velocityCoefficient) == 0;
+        /* JADX INFO: renamed from: hashCode-impl, reason: not valid java name */
+        public static int m550hashCodeimpl(long j) {
+            return Long.hashCode(j);
+        }
+
+        /* JADX INFO: renamed from: toString-impl, reason: not valid java name */
+        public static String m551toStringimpl(long j) {
+            return "FlingResult(packedValue=" + j + ')';
+        }
+
+        public boolean equals(Object obj) {
+            return m546equalsimpl(this.packedValue, obj);
         }
 
         public int hashCode() {
-            return (Float.hashCode(this.distanceCoefficient) * 31) + Float.hashCode(this.velocityCoefficient);
+            return m550hashCodeimpl(this.packedValue);
         }
 
         public String toString() {
-            return "FlingResult(distanceCoefficient=" + this.distanceCoefficient + ", velocityCoefficient=" + this.velocityCoefficient + ')';
+            return m551toStringimpl(this.packedValue);
         }
 
-        public FlingResult(float distanceCoefficient, float velocityCoefficient) {
-            this.distanceCoefficient = distanceCoefficient;
-            this.velocityCoefficient = velocityCoefficient;
+        /* JADX INFO: renamed from: unbox-impl, reason: not valid java name and from getter */
+        public final /* synthetic */ long getPackedValue() {
+            return this.packedValue;
         }
 
-        public final float getDistanceCoefficient() {
-            return this.distanceCoefficient;
+        private /* synthetic */ FlingResult(long packedValue) {
+            this.packedValue = packedValue;
         }
 
-        public final float getVelocityCoefficient() {
-            return this.velocityCoefficient;
+        /* JADX INFO: renamed from: getDistanceCoefficient-impl, reason: not valid java name */
+        public static final float m548getDistanceCoefficientimpl(long arg0) {
+            int bits$iv$iv = (int) (arg0 >> 32);
+            return Float.intBitsToFloat(bits$iv$iv);
+        }
+
+        /* JADX INFO: renamed from: getVelocityCoefficient-impl, reason: not valid java name */
+        public static final float m549getVelocityCoefficientimpl(long arg0) {
+            int bits$iv$iv = (int) (4294967295L & arg0);
+            return Float.intBitsToFloat(bits$iv$iv);
         }
     }
 }
